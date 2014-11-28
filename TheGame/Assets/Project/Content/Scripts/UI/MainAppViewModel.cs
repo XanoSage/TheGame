@@ -11,6 +11,8 @@ public class MainAppViewModel : MonoBehaviour {
 		Timer
 	}
 
+	public UIWidget ElementContainer;
+
 	public UIToggle AlarmToggle;
 	public UIToggle TimerToggle;
 

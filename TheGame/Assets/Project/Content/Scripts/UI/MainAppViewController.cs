@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using UnityTools.Other;
 
-public class MainAppViewController : MonoBehaviour {
+public class MainAppViewController : MonoBehaviour, IShowable  {
 
 	#region Variables
 
@@ -128,6 +129,26 @@ public class MainAppViewController : MonoBehaviour {
 		_model.TimerTimeShowLabel.gameObject.SetActive(false);
 	}
 	#endregion
+
+	#endregion
+
+	#region IShowable implementation
+
+	public void Show()
+	{
+		Visible = true;
+
+		_model.ElementContainer.gameObject.SetActive(true);
+	}
+
+	public void Hide()
+	{
+		Visible = false;
+
+		_model.ElementContainer.gameObject.SetActive(false);
+	}
+
+	public bool Visible { get; private set; }
 
 	#endregion
 }
