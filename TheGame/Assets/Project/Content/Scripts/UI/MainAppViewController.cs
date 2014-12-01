@@ -10,6 +10,11 @@ public class MainAppViewController : MonoBehaviour, IShowable  {
 
 	private MainAppViewModel _model;
 
+	public event Action OnMainAppViewAlarmChangeEvent;
+	public event Action OnMainAppViewTimerChangeEvent;
+
+	public event Action OnMainAppViewChangeChapterEvent;
+
 	#endregion
 
 	#region MonoBehaviour action
@@ -67,6 +72,21 @@ public class MainAppViewController : MonoBehaviour, IShowable  {
 	private void OnChangeShowTimeClick(GameObject sender)
 	{
 		Debug.Log("MainAppViewController.OnChangeShowTimeClick - OK");
+
+		if (_model.Setting == MainAppViewModel.MainSetting.Alarm)
+		{
+			if (null != OnMainAppViewAlarmChangeEvent)
+			{
+				OnMainAppViewAlarmChangeEvent();
+			}
+		}
+		else
+		{
+			if (null != OnMainAppViewTimerChangeEvent)
+			{
+				OnMainAppViewTimerChangeEvent();
+			}
+		}
 	}
 
 	private void OnChangeShowTimePressed(GameObject sender, bool isPressed)
@@ -127,6 +147,16 @@ public class MainAppViewController : MonoBehaviour, IShowable  {
 	private void HideTimerTimeLabel()
 	{
 		_model.TimerTimeShowLabel.gameObject.SetActive(false);
+	}
+
+	private void OnChangeChapterButtonClick(GameObject sender)
+	{
+		Debug.Log("MainAppViewController.OnChangeChapterButtonClick - OK");
+
+		if (null != OnMainAppViewChangeChapterEvent)
+		{
+			OnMainAppViewChangeChapterEvent();
+		}
 	}
 	#endregion
 

@@ -26,5 +26,7 @@ public class MainAppViewModel : MonoBehaviour {
 
 	[HideInInspector] public MainSetting Setting;
 
+	public UIEventListener ChangeChapterButton;
+
 	#endregion
 }

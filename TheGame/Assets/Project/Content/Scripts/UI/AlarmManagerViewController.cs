@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityTools.Other;
 
@@ -9,6 +10,8 @@ public class AlarmManagerViewController : MonoBehaviour, IShowable
 
 	private AlarmManagerViewModel _model;
 
+
+	public event Action OnBackButtonEvent; 
 	#endregion
 
 	#region Monobehaviour actions
@@ -57,6 +60,11 @@ public class AlarmManagerViewController : MonoBehaviour, IShowable
 	private void OnBackButtonClick(GameObject sender)
 	{
 		Debug.Log("AlarmManagerViewController.OnBackButtonClick - OK");
+
+		if (null != OnBackButtonEvent)
+		{
+			OnBackButtonEvent();
+		}
 	}
 
 	private void OnAddButtonClick(GameObject sender)
