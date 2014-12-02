@@ -53,6 +53,8 @@ public class MainAppViewController : MonoBehaviour, IShowable  {
 		_model.ChangeShowTimeButton.onClick = OnChangeShowTimeClick;
 		_model.ChangeShowTimeButton.onPress = OnChangeShowTimePressed;
 
+		_model.ChangeChapterButton.onClick = OnChangeChapterButtonClick;
+
 		_model.AlarmToggle.onChange = new List<EventDelegate>();
 		_model.AlarmToggle.onChange.Add(new EventDelegate(OnAlarmToggleChange));
 

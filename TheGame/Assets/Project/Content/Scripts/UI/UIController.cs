@@ -8,6 +8,8 @@ public class UIController : MonoBehaviour {
 	private MainAppViewController _mainAppViewController;
 	private AlarmManagerViewController _alarmManagerViewController;
 	private TimerSetViewController _timerSetViewController;
+	private ChapterSelectViewController _chapterSelectViewController;
+
 
 	#endregion
 
@@ -19,6 +21,7 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController = FindObjectOfType<MainAppViewController>();
 		_alarmManagerViewController = FindObjectOfType<AlarmManagerViewController>();
 		_timerSetViewController = FindObjectOfType<TimerSetViewController>();
+		_chapterSelectViewController = FindObjectOfType<ChapterSelectViewController>();
 
 		SubscribeEvents();
 	}
@@ -41,22 +44,30 @@ public class UIController : MonoBehaviour {
 	{
 		_mainAppViewController.OnMainAppViewAlarmChangeEvent += OnMainAppViewAlarmChangeClick;
 		_mainAppViewController.OnMainAppViewTimerChangeEvent += OnMainAppViewTimerChangeClick;
+		_mainAppViewController.OnMainAppViewChangeChapterEvent += OnMainAppViewChapterChangeClick;
 
 		_alarmManagerViewController.OnBackButtonEvent += OnAlarmManagerBackButton;
 
 		_timerSetViewController.OnCancelButtonEvent += OnTimerSetViewCancelButton;
 		_timerSetViewController.OnSaveButtonEvent += OnTimerSetViewSaveButton;
+
+		_chapterSelectViewController.OnApplyButtonEvent += OnChapterSelectViewApplyButton;
+		_chapterSelectViewController.OnCancelButtonEvent += OnChaterSelectViewCancelButton;
 	}
 
 	private void UnSubscribeEvents()
 	{
 		_mainAppViewController.OnMainAppViewAlarmChangeEvent -= OnMainAppViewAlarmChangeClick;
 		_mainAppViewController.OnMainAppViewTimerChangeEvent -= OnMainAppViewTimerChangeClick;
+		_mainAppViewController.OnMainAppViewChangeChapterEvent -= OnMainAppViewChapterChangeClick;
 
 		_alarmManagerViewController.OnBackButtonEvent -= OnAlarmManagerBackButton;
 
 		_timerSetViewController.OnCancelButtonEvent -= OnTimerSetViewCancelButton;
 		_timerSetViewController.OnSaveButtonEvent -= OnTimerSetViewSaveButton;
+
+		_chapterSelectViewController.OnApplyButtonEvent -= OnChapterSelectViewApplyButton;
+		_chapterSelectViewController.OnCancelButtonEvent -= OnChaterSelectViewCancelButton;
 	}
 
 	#region MainApp View Actions
@@ -79,6 +90,9 @@ public class UIController : MonoBehaviour {
 	private void OnMainAppViewChapterChangeClick()
 	{
 		Debug.Log("UIController.OnMainAppViewChapterChangeClick - OK");
+
+		_mainAppViewController.Hide();
+		_chapterSelectViewController.Show();
 	}
 
 	#endregion
@@ -106,13 +120,30 @@ public class UIController : MonoBehaviour {
 
 	private void OnTimerSetViewSaveButton()
 	{
-		Debug.Log("UIController.OnTimerSetViewCancelButton - OK");
+		Debug.Log("UIController.OnTimerSetViewSaveButton - OK");
 		_timerSetViewController.Hide();
 		_mainAppViewController.Show();
 	}
 		 
 	#endregion
 
-	
+	#region Chapter Select View Actions
+
+	private void OnChaterSelectViewCancelButton()
+	{
+		Debug.Log("UIController.OnChaterSelectViewCanceButton - OK");
+		_chapterSelectViewController.Hide();
+		_mainAppViewController.Show();
+	}
+
+	private void OnChapterSelectViewApplyButton()
+	{
+		Debug.Log("UIController.OnChapterSelectViewApplyButton - OK");
+		_chapterSelectViewController.Hide();
+		_mainAppViewController.Show();
+	}
+
+	#endregion
+
 	#endregion
 }
