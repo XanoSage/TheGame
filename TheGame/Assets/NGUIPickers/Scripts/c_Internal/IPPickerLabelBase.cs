@@ -28,7 +28,7 @@ public abstract class IPPickerLabelBase : IPPickerBase
 	{
 		for ( int i = 0; i < uiLabels.Length; i++ )
 		{
-			uiLabels[i].bitmapFont = font;
+			//uiLabels[i].bitmapFont = font;
 			uiLabels[i].MakePixelPerfect ();
 			
 			uiLabels[i].color = widgetsColor;
