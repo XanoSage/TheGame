@@ -30,7 +30,7 @@ public class TimerSetViewController : MonoBehaviour, IShowable  {
 		}
 
 		SubscribeEvents();
-		Hide();
+		//Hide();
 	}
 	
 	// Update is called once per frame
@@ -87,6 +87,17 @@ public class TimerSetViewController : MonoBehaviour, IShowable  {
 	}
 
 	public bool Visible { get; private set; }
+
+	void OnIntervalSelect()
+	{
+		if (_model == null || _model.TextPicker == null)
+			return;
+
+		Debug.Log("TimerSetViewController.OnIntervalSelect - OK, text is: " + Convert.ToInt32( _model.TextPicker.CurrentLabelText.Split(' ')[0]));
+
+		//string str = "12 sdf";
+		//str = string.Split(' ');
+	}
 
 	#endregion
 }
