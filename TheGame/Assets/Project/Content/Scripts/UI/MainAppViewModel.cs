@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Project.Content.Scripts.Timer;
+using UnityEngine;
 using System.Collections;
 
 public class MainAppViewModel : MonoBehaviour {
@@ -27,6 +28,8 @@ public class MainAppViewModel : MonoBehaviour {
 	[HideInInspector] public MainSetting Setting;
 
 	public UIEventListener ChangeChapterButton;
+
+	public SimpleTimer TheTimer;
 
 	#endregion
 }

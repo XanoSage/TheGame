@@ -11,7 +11,7 @@ public class TimerSetViewController : MonoBehaviour, IShowable  {
 
 	public event Action OnCancelButtonEvent;
 
-	public event Action OnSaveButtonEvent;
+	public event Action<int, int, int> OnSaveButtonEvent;
 
 	#endregion
 
@@ -30,7 +30,7 @@ public class TimerSetViewController : MonoBehaviour, IShowable  {
 		}
 
 		SubscribeEvents();
-		//Hide();
+		Hide();
 	}
 	
 	// Update is called once per frame
@@ -62,10 +62,59 @@ public class TimerSetViewController : MonoBehaviour, IShowable  {
 	{
 		Debug.Log("TimerSetViewController.OnSaveButtonClick - OK");
 
+		OnHourSelect();
+		OnMinutesSelect();
+		OnIntervalSelect();
+
 		if (null != OnSaveButtonEvent)
 		{
-			OnSaveButtonEvent();
+			OnSaveButtonEvent(_model.HourSelect, _model.MinuteSelect, _model.IntervalSelectionMinutes);
 		}
+	}
+
+	void OnIntervalSelect()
+	{
+		if (_model == null || _model.TextPicker == null)
+			return;
+
+		_model.IntervalSelectionMinutes = GetInterval(Convert.ToInt32(_model.TextPicker.CurrentLabelText.Split(' ')[0]));
+
+		Debug.Log("TimerSetViewController.OnIntervalSelect - OK, interval in minutes is: " + _model.IntervalSelectionMinutes);
+		
+	}
+
+	private int GetInterval(int interval)
+	{
+		int minutes = 0;
+
+		if (interval == 5 || interval == 10 || interval == 15 || interval == 30)
+			minutes = interval;
+		else
+		{
+			minutes = interval*60;
+		}
+
+		return minutes;
+	}
+
+	private void OnHourSelect()
+	{
+		if (_model == null || _model.HourPicker == null)
+			return;
+
+		_model.HourSelect = Convert.ToInt32(_model.HourPicker.CurrentValue);
+
+		Debug.Log("TimerSetViewController.OnHourSelect - OK, hours is: " + _model.HourSelect);
+	}
+
+	private void OnMinutesSelect()
+	{
+		if (_model == null || _model.MinutePicker == null)
+			return;
+
+		_model.MinuteSelect = Convert.ToInt32(_model.MinutePicker.CurrentValue);
+
+		Debug.Log("TimerSetViewController.OnMinutesSelect - OK, minutes is: " + _model.MinuteSelect);
 	}
 
 	#endregion
@@ -87,17 +136,6 @@ public class TimerSetViewController : MonoBehaviour, IShowable  {
 	}
 
 	public bool Visible { get; private set; }
-
-	void OnIntervalSelect()
-	{
-		if (_model == null || _model.TextPicker == null)
-			return;
-
-		Debug.Log("TimerSetViewController.OnIntervalSelect - OK, text is: " + Convert.ToInt32( _model.TextPicker.CurrentLabelText.Split(' ')[0]));
-
-		//string str = "12 sdf";
-		//str = string.Split(' ');
-	}
 
 	#endregion
 }

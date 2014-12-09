@@ -118,10 +118,13 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController.Show();
 	}
 
-	private void OnTimerSetViewSaveButton()
+	private void OnTimerSetViewSaveButton(int hour, int minutes, int interval)
 	{
 		Debug.Log("UIController.OnTimerSetViewSaveButton - OK");
 		_timerSetViewController.Hide();
+
+		_mainAppViewController.SetTimer(hour, minutes, interval);
+
 		_mainAppViewController.Show();
 	}
 		 

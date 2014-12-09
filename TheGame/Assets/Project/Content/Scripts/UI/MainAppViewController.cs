@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Project.Content.Scripts.Timer;
 using UnityEngine;
 using System.Collections;
 using UnityTools.Other;
@@ -67,6 +68,35 @@ public class MainAppViewController : MonoBehaviour, IShowable  {
 		_model.AlarmToggle.onChange.Clear();
 
 		_model.TimerToggle.onChange.Clear();
+	}
+
+	public void SetTimer(int hour, int minutes, int interval)
+	{
+		_model.TheTimer = SimpleTimer.Create(hour, minutes, interval);
+		InitTimerDisplayLabel();
+		InitNotificationCountLabel();
+	}
+
+	private void InitTimerDisplayLabel()
+	{
+		if (_model.TheTimer == null)
+			return;
+
+		string str = string.Format("{0:D2}:{1:D2}", _model.TheTimer.Hour, _model.TheTimer.Minutes);
+
+		_model.TimerTimeShowLabel.text = str;
+	}
+
+	private void InitNotificationCountLabel()
+	{
+		if (_model.TheTimer == null)
+		{
+			return;
+		}
+
+		_model.TheTimer.CalculateNotificationsCount();
+
+		_model.MessageShowCountLabel.text = _model.TheTimer.NotificationCount.ToString();
 	}
 
 	#region Button Handler Actions
