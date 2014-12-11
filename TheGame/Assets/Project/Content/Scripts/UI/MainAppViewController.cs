@@ -5,7 +5,15 @@ using UnityEngine;
 using System.Collections;
 using UnityTools.Other;
 
-public class MainAppViewController : MonoBehaviour, IShowable  {
+public class MainAppViewController : MonoBehaviour, IShowable {
+
+	#region Constants
+
+	private const string SelectedChapterPrefab = "Prefabs/UI/SelectedChapterPrefab";
+	private const int SelectedChapterContainerBaseHeight = 60;
+	private const float BaseStartPosY = -50;
+
+	#endregion
 
 	#region Variables
 
@@ -29,6 +37,10 @@ public class MainAppViewController : MonoBehaviour, IShowable  {
 		{
 			throw new MissingComponentException("MainAppViewController.Start - cann't find MainAppViewModel for _model");
 		}
+
+		_model.SelectedChapters = new List<SelectedChapterHelperController>();
+
+		_model.SelectedChapterContainer.height = SelectedChapterContainerBaseHeight;
 
 		SubscribeEvents();
 
@@ -190,6 +202,58 @@ public class MainAppViewController : MonoBehaviour, IShowable  {
 			OnMainAppViewChangeChapterEvent();
 		}
 	}
+	#endregion
+
+	#region Selected Chapter Actions
+
+	public void InitSelectedChapterList(List<ChapterHelperController> chapters)
+	{
+		if (_model.SelectedChapters.Count > 0)
+			RemoveSelectedChapterList();
+
+		int counter = 0;
+
+		foreach (ChapterHelperController chapter in chapters)
+		{
+			if (!chapter.IsSelected)
+				continue;
+
+			GameObject selectedChapterToMake = (GameObject) Resources.Load(SelectedChapterPrefab);
+
+			SelectedChapterHelperController selectedChapter =
+				NGUITools.AddChild(_model.SelectedChapterContainer.gameObject, selectedChapterToMake)
+				         .GetComponent<SelectedChapterHelperController>();
+
+			_model.SelectedChapterContainer.height += selectedChapter.WidgetHeight;
+
+			selectedChapter.Init(chapter.Name);
+			
+			Vector3 currPos = selectedChapter.transform.localPosition;
+
+			int shiftY = selectedChapter.WidgetHeight;
+
+			selectedChapter.transform.localPosition = new Vector3(currPos.x, BaseStartPosY + currPos.y - shiftY*counter, currPos.z);
+
+			_model.SelectedChapters.Add(selectedChapter);
+
+			counter++;
+		}
+
+		_model.ScrollView.ResetPosition();
+		_model.ScrollView.UpdateScrollbars();
+	}
+
+	private void RemoveSelectedChapterList()
+	{
+		for (int i = 0; i < _model.SelectedChapters.Count; i++)
+		{
+			Destroy(_model.SelectedChapters[i].gameObject);
+		}
+
+		_model.SelectedChapters.Clear();
+		_model.SelectedChapterContainer.height = SelectedChapterContainerBaseHeight;
+	}
+
 	#endregion
 
 	#endregion

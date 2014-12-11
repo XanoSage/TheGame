@@ -1,4 +1,5 @@
-﻿using Assets.Project.Content.Scripts.Timer;
+﻿using System.Collections.Generic;
+using Assets.Project.Content.Scripts.Timer;
 using UnityEngine;
 using System.Collections;
 
@@ -29,7 +30,13 @@ public class MainAppViewModel : MonoBehaviour {
 
 	public UIEventListener ChangeChapterButton;
 
+	public UIWidget SelectedChapterContainer;
+
+	public UIScrollView ScrollView;
+
 	public SimpleTimer TheTimer;
+
+	[HideInInspector] public List<SelectedChapterHelperController> SelectedChapters;
 
 	#endregion
 }

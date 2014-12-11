@@ -18,7 +18,7 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 	private ChapterSelectViewModel _model;
 
 	public event Action OnCancelButtonEvent;
-	public event Action OnApplyButtonEvent;
+	public event Action<List<ChapterHelperController>> OnApplyButtonEvent;
 
 	#endregion
 
@@ -77,7 +77,7 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 
 		if (null != OnApplyButtonEvent)
 		{
-			OnApplyButtonEvent();
+			OnApplyButtonEvent(_model.ListOfChapter);
 		}
 
 		ResetListOfCurrentChange();

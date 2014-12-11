@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class UIController : MonoBehaviour {
@@ -139,10 +140,13 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController.Show();
 	}
 
-	private void OnChapterSelectViewApplyButton()
+	private void OnChapterSelectViewApplyButton(List<ChapterHelperController> chapters)
 	{
 		Debug.Log("UIController.OnChapterSelectViewApplyButton - OK");
 		_chapterSelectViewController.Hide();
+
+		_mainAppViewController. InitSelectedChapterList(chapters);
+
 		_mainAppViewController.Show();
 	}
 

@@ -13,6 +13,8 @@ public class ChapterHelperController : MonoBehaviour {
 	}
 
 	public int Index { get { return _model.Index; }}
+
+	public string Name { get { return _model.ChapterName.text; }}
 	
 	#endregion
 
