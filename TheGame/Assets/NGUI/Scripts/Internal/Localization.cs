@@ -333,16 +333,16 @@ public static class Localization
 
 		string val;
 		string[] vals;
-#if UNITY_IPHONE || UNITY_ANDROID
-		string mobKey = key + " Mobile";
+//#if UNITY_IPHONE || UNITY_ANDROID
+//		string mobKey = key + " Mobile";
 
-		if (mLanguageIndex != -1 && mDictionary.TryGetValue(mobKey, out vals))
-		{
-			if (mLanguageIndex < vals.Length)
-				return vals[mLanguageIndex];
-		}
-		else if (mOldDictionary.TryGetValue(mobKey, out val)) return val;
-#endif
+//		if (mLanguageIndex != -1 && mDictionary.TryGetValue(mobKey, out vals))
+//		{
+//			if (mLanguageIndex < vals.Length)
+//				return vals[mLanguageIndex];
+//		}
+//		else if (mOldDictionary.TryGetValue(mobKey, out val)) return val;
+//#endif
 		if (mLanguageIndex != -1 && mDictionary.TryGetValue(key, out vals))
 		{
 			if (mLanguageIndex < vals.Length)
@@ -377,11 +377,24 @@ public static class Localization
 		// Ensure we have a language to work with
 		if (!localizationHasBeenSet) language = PlayerPrefs.GetString("Language", "English");
 
-#if UNITY_IPHONE || UNITY_ANDROID
-		string mobKey = key + " Mobile";
-		if (mDictionary.ContainsKey(mobKey)) return true;
-		else if (mOldDictionary.ContainsKey(mobKey)) return true;
-#endif
+//#if UNITY_IPHONE || UNITY_ANDROID
+//		string mobKey = key + " Mobile";
+//		if (mDictionary.ContainsKey(mobKey)) return true;
+//		else if (mOldDictionary.ContainsKey(mobKey)) return true;
+//#endif
 		return mDictionary.ContainsKey(key) || mOldDictionary.ContainsKey(key);
+	}
+
+	static public void ShowEntire()
+	{
+		foreach (KeyValuePair<string, string[]> keyValuePair in mDictionary)
+		{
+			Debug.Log(keyValuePair.Key + " " + keyValuePair.Value);
+		}
+
+		foreach (KeyValuePair<string, string> keyValuePair in mOldDictionary)
+		{
+			Debug.Log(keyValuePair.Key + " " + keyValuePair.Value);
+		}
 	}
 }

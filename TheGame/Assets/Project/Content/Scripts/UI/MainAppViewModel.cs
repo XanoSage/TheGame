@@ -36,6 +36,8 @@ public class MainAppViewModel : MonoBehaviour {
 
 	public SimpleTimer TheTimer;
 
+	public UIEventListener ApplyButton;
+
 	[HideInInspector] public List<SelectedChapterHelperController> SelectedChapters;
 
 	#endregion

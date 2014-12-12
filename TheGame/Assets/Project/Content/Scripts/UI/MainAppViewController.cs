@@ -4,6 +4,7 @@ using Assets.Project.Content.Scripts.Timer;
 using UnityEngine;
 using System.Collections;
 using UnityTools.Other;
+using Random = UnityEngine.Random;
 
 public class MainAppViewController : MonoBehaviour, IShowable {
 
@@ -23,6 +24,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 	public event Action OnMainAppViewTimerChangeEvent;
 
 	public event Action OnMainAppViewChangeChapterEvent;
+
+	public event Action OnMainAppViewApplyButtonEvent;
 
 	#endregion
 
@@ -73,6 +76,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 		_model.TimerToggle.onChange = new List<EventDelegate>();
 		_model.TimerToggle.onChange.Add(new EventDelegate(OnTimerToggleChange));
+
+		_model.ApplyButton.onClick = OnApplyButtonClick;
 	}
 
 	private void UnsubscribeEvents()
@@ -252,6 +257,47 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 		_model.SelectedChapters.Clear();
 		_model.SelectedChapterContainer.height = SelectedChapterContainerBaseHeight;
+	}
+
+	#endregion
+
+	#region Apply Event Actions
+
+	private void OnApplyButtonClick(GameObject sender)
+	{
+		Debug.Log("MainAppViewController.OnApplyButtonClick - OK");
+
+		TryGetAnyText();
+
+		if (null != OnMainAppViewApplyButtonEvent)
+		{
+			OnMainAppViewApplyButtonEvent();
+		}
+	}
+
+	private void TryGetAnyText()
+	{
+		int indexChId = Random.Range(0, 14);
+		int indexNotification = Random.Range(0, 100);
+
+		ChapterSelectViewController chapterSelect = FindObjectOfType<ChapterSelectViewController>();
+
+		if (null == chapterSelect)
+		{
+			throw new MissingComponentException(
+				"MainAppViewController.TryGetEnyText - cannot find ChapterSelectViewController component");
+		}
+
+		string chapterId = chapterSelect.GetChapterId(indexChId);
+		string description = Language.Get(string.Format("{0}_{1}", chapterId, indexNotification)); //Privratnik_vechnosti_10
+		//string description = Localization.Get("Privratnik_vechnosti_11");
+
+		Debug.Log(string.Format("TryToGetAnyText: indexChId: {0}, chaperId: {1}, indexNotification: {2} \ndescription: {3}",
+								indexChId, chapterId, indexNotification, description));
+
+		//Debug.Log(Language.Get(description));
+
+		//Localization.ShowEntire();
 	}
 
 	#endregion

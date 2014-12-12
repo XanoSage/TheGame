@@ -9,7 +9,20 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 	#region Constants
 
 	private const int ChapterCount = 10;
-	private const string ChapterPrefabPath = "Prefabs/UI/ChapterPrefab"; 
+	private const string ChapterPrefabPath = "Prefabs/UI/ChapterPrefab";
+
+	private readonly string[] _chaptersId =
+		{
+			"Slajdy", "Mayatniki", "Volna_udachi", "Ravnovesie", "Inducirovannyj_perehod",
+			"Techenie_variantov", "Namerenie", "Dusha_i_razum", "Celi_i_dveri", "Frejling", "Koordinacija", "Tancy_s_tenjami",
+			"Zerkalnyj_mir", "Privratnik_vechnosti"
+		};
+
+	private readonly string[] _chaptersName =
+		{
+			"Слайды", "Маятники", "Волна Удачи", "Равновесие", "Индуцированный Переход", "Течение Вариантов", "Намерение",
+			"Душа и Разум", "Цели и Двери", "Фрэйлинг", "Координация", "Танцы с Тенями", "Зеркальный Мир", "Привратник Вечности"
+		};
 
 	#endregion
 
@@ -86,7 +99,7 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 	private void InitChapterList()
 	{
 		float shiftY = 0;
-		for (int i = 0; i < ChapterCount; i++)
+		for (int i = 0; i < _chaptersId.Length; i++)
 		{
 			GameObject chapterPrefabToMake = (GameObject) Resources.Load(ChapterPrefabPath);
 
@@ -100,7 +113,7 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 
 			UIEventListener.Get(chapterHelperController.gameObject).onClick = go => OnChapterSelect(chapterHelperController.Index);
 
-			chapterHelperController.Init(i, "Chapter" + (i + 1));
+			chapterHelperController.Init(i, _chaptersName[i]);
 
 			shiftY = (chapterHelperController.GetComponent<UIWidget>()).height;
 
@@ -166,6 +179,20 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 				_model.ListOfChapter[i].SelectChapter();
 			}
 		}
+	}
+
+	public string GetChapterId(int index)
+	{
+		string str = string.Empty;
+
+		if (index < 0 || index >= _chaptersId.Length)
+			return str;
+		else
+		{
+			str = _chaptersId[index];
+		}
+
+		return str;
 	}
 
 	#endregion
