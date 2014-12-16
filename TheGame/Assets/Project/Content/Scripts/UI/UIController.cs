@@ -107,9 +107,15 @@ public class UIController : MonoBehaviour {
 		Debug.Log("UIController.OnMainAppViewChapterChangeClick - OK");
 
 		if (_mainAppViewController.SelectedChapterCount < 1)
+		{
+			// need to add pop up message
+
 			return;
+		}
 
 		_mainAppViewController.Hide();
+
+
 
 		_notificationDisplayViewController.Show();
 	}
