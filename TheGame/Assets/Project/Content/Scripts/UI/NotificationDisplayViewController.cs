@@ -9,6 +9,8 @@ public class NotificationDisplayViewController : MonoBehaviour, IShowable  {
 
 	private NotificationDisplayViewModel _model;
 
+	public event Action OnCloseButtonEvent;
+
 	#endregion
 
 	#region MonoBehaviour Action
@@ -49,6 +51,11 @@ public class NotificationDisplayViewController : MonoBehaviour, IShowable  {
 	private void OnCloseButtonClick(GameObject sender)
 	{
 		Debug.Log("NotificationDisplayViewController.OnCloseButtonClick - OK");
+
+		if (null != OnCloseButtonEvent)
+		{
+			OnCloseButtonEvent();
+		}
 	}
 
 	#endregion

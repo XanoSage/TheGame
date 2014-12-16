@@ -20,6 +20,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 	private MainAppViewModel _model;
 
+	public int SelectedChapterCount {get { return _model.SelectedChapters.Count; }}
+
 	public event Action OnMainAppViewAlarmChangeEvent;
 	public event Action OnMainAppViewTimerChangeEvent;
 

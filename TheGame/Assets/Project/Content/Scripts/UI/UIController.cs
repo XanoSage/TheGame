@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour {
 	private AlarmManagerViewController _alarmManagerViewController;
 	private TimerSetViewController _timerSetViewController;
 	private ChapterSelectViewController _chapterSelectViewController;
+	private NotificationDisplayViewController _notificationDisplayViewController;
 
 
 	#endregion
@@ -23,6 +24,7 @@ public class UIController : MonoBehaviour {
 		_alarmManagerViewController = FindObjectOfType<AlarmManagerViewController>();
 		_timerSetViewController = FindObjectOfType<TimerSetViewController>();
 		_chapterSelectViewController = FindObjectOfType<ChapterSelectViewController>();
+		_notificationDisplayViewController = FindObjectOfType<NotificationDisplayViewController>();
 
 		SubscribeEvents();
 	}
@@ -54,6 +56,8 @@ public class UIController : MonoBehaviour {
 
 		_chapterSelectViewController.OnApplyButtonEvent += OnChapterSelectViewApplyButton;
 		_chapterSelectViewController.OnCancelButtonEvent += OnChaterSelectViewCancelButton;
+
+		_notificationDisplayViewController.OnCloseButtonEvent += OnNotificationDisplayViewCloseButton;
 	}
 
 	private void UnSubscribeEvents()
@@ -69,6 +73,8 @@ public class UIController : MonoBehaviour {
 
 		_chapterSelectViewController.OnApplyButtonEvent -= OnChapterSelectViewApplyButton;
 		_chapterSelectViewController.OnCancelButtonEvent -= OnChaterSelectViewCancelButton;
+
+		_notificationDisplayViewController.OnCloseButtonEvent -= OnNotificationDisplayViewCloseButton;
 	}
 
 	#region MainApp View Actions
@@ -94,6 +100,18 @@ public class UIController : MonoBehaviour {
 
 		_mainAppViewController.Hide();
 		_chapterSelectViewController.Show();
+	}
+
+	private void OnMainAppViewApplyButtonClick()
+	{
+		Debug.Log("UIController.OnMainAppViewChapterChangeClick - OK");
+
+		if (_mainAppViewController.SelectedChapterCount < 1)
+			return;
+
+		_mainAppViewController.Hide();
+
+		_notificationDisplayViewController.Show();
 	}
 
 	#endregion
@@ -145,7 +163,20 @@ public class UIController : MonoBehaviour {
 		Debug.Log("UIController.OnChapterSelectViewApplyButton - OK");
 		_chapterSelectViewController.Hide();
 
-		_mainAppViewController. InitSelectedChapterList(chapters);
+		_mainAppViewController.InitSelectedChapterList(chapters);
+
+		_mainAppViewController.Show();
+	}
+
+	#endregion
+
+	#region Notivication Display View Action
+
+	private void OnNotificationDisplayViewCloseButton()
+	{
+		Debug.Log("UIController.OnNotificationDisplayViewCloseButton - OK");
+
+		_notificationDisplayViewController.Hide();
 
 		_mainAppViewController.Show();
 	}
