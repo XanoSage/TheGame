@@ -48,6 +48,7 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController.OnMainAppViewAlarmChangeEvent += OnMainAppViewAlarmChangeClick;
 		_mainAppViewController.OnMainAppViewTimerChangeEvent += OnMainAppViewTimerChangeClick;
 		_mainAppViewController.OnMainAppViewChangeChapterEvent += OnMainAppViewChapterChangeClick;
+		_mainAppViewController.OnMainAppViewApplyButtonEvent += OnMainAppViewApplyButtonClick;
 
 		_alarmManagerViewController.OnBackButtonEvent += OnAlarmManagerBackButton;
 
@@ -65,6 +66,7 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController.OnMainAppViewAlarmChangeEvent -= OnMainAppViewAlarmChangeClick;
 		_mainAppViewController.OnMainAppViewTimerChangeEvent -= OnMainAppViewTimerChangeClick;
 		_mainAppViewController.OnMainAppViewChangeChapterEvent -= OnMainAppViewChapterChangeClick;
+		_mainAppViewController.OnMainAppViewApplyButtonEvent -= OnMainAppViewApplyButtonClick;
 
 		_alarmManagerViewController.OnBackButtonEvent -= OnAlarmManagerBackButton;
 
@@ -115,7 +117,7 @@ public class UIController : MonoBehaviour {
 
 		_mainAppViewController.Hide();
 
-
+		_notificationDisplayViewController.Init(_mainAppViewController.CurrentNotification);
 
 		_notificationDisplayViewController.Show();
 	}

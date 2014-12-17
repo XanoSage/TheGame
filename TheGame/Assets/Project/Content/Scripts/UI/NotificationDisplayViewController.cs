@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Project.Content.Scripts.UI.Notification;
 using UnityEngine;
 using System.Collections;
 using UnityTools.Other;
@@ -26,6 +27,7 @@ public class NotificationDisplayViewController : MonoBehaviour, IShowable  {
 		}
 
 		SubscribeEvents();
+		Hide();
 	}
 	
 	// Update is called once per frame
@@ -37,10 +39,14 @@ public class NotificationDisplayViewController : MonoBehaviour, IShowable  {
 
 	#region Actions
 
-	public void Init(string chapterName, string description)
+	public void Init(Notification notification)
 	{
-		_model.ChapterName.text = chapterName;
-		_model.Description.text = description;
+		if (null == notification)
+		{
+			throw new NullReferenceException("NotificationDisplayViewController.Init - ntification is null");
+		}
+		_model.ChapterName.text = notification.ChapterName;
+		_model.Description.text = notification.Description;
 	}
 
 	private void SubscribeEvents()

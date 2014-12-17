@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Project.Content.Scripts.Timer;
+using Assets.Project.Content.Scripts.UI.Notification;
 using UnityEngine;
 using System.Collections;
 using UnityTools.Other;
@@ -20,7 +21,11 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 	private MainAppViewModel _model;
 
+	public Notification CurrentNotification { get { return _model.CurrentNotification; } }
+
 	public int SelectedChapterCount {get { return _model.SelectedChapters.Count; }}
+
+
 
 	public event Action OnMainAppViewAlarmChangeEvent;
 	public event Action OnMainAppViewTimerChangeEvent;
@@ -46,6 +51,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 		_model.SelectedChapters = new List<SelectedChapterHelperController>();
 
 		_model.SelectedChapterContainer.height = SelectedChapterContainerBaseHeight;
+
+		_model.CurrentNotification = null;
 
 		SubscribeEvents();
 
@@ -280,7 +287,7 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 	private void TryGetAnyText()
 	{
 		int indexChId = Random.Range(0, 14);
-		int indexNotification = Random.Range(0, 100);
+		int indexNotification = Random.Range(0, 50);
 
 		ChapterSelectViewController chapterSelect = FindObjectOfType<ChapterSelectViewController>();
 
@@ -298,6 +305,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 								indexChId, chapterId, indexNotification, description));
 
 		//Debug.Log(Language.Get(description));
+
+		_model.CurrentNotification = Notification.Create(chapterSelect.GetChapterName(indexChId), chapterId, description);
 
 		//Localization.ShowEntire();
 	}

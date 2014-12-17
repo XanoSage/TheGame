@@ -195,6 +195,20 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 		return str;
 	}
 
+	public string GetChapterName(int index)
+	{
+		string str = string.Empty;
+
+		if (index < 0 || index >= _chaptersId.Length)
+			return str;
+		else
+		{
+			str = _chaptersName[index];
+		}
+
+		return str;
+	}
+
 	#endregion
 
 	#region IShowable Implenentation

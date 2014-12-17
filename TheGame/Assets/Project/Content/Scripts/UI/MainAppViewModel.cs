@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Project.Content.Scripts.Timer;
+using Assets.Project.Content.Scripts.UI.Notification;
 using UnityEngine;
 using System.Collections;
 
@@ -39,6 +40,8 @@ public class MainAppViewModel : MonoBehaviour {
 	public UIEventListener ApplyButton;
 
 	[HideInInspector] public List<SelectedChapterHelperController> SelectedChapters;
+
+	public Notification CurrentNotification;
 
 	#endregion
 }
