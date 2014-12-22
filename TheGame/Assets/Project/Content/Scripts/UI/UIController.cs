@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour {
 	private TimerSetViewController _timerSetViewController;
 	private ChapterSelectViewController _chapterSelectViewController;
 	private NotificationDisplayViewController _notificationDisplayViewController;
+	private AlarmSetViewController _alarmSetViewController;
 
 
 	#endregion
@@ -25,6 +26,7 @@ public class UIController : MonoBehaviour {
 		_timerSetViewController = FindObjectOfType<TimerSetViewController>();
 		_chapterSelectViewController = FindObjectOfType<ChapterSelectViewController>();
 		_notificationDisplayViewController = FindObjectOfType<NotificationDisplayViewController>();
+		_alarmSetViewController = FindObjectOfType<AlarmSetViewController>();
 
 		SubscribeEvents();
 	}
@@ -51,6 +53,7 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController.OnMainAppViewApplyButtonEvent += OnMainAppViewApplyButtonClick;
 
 		_alarmManagerViewController.OnBackButtonEvent += OnAlarmManagerBackButton;
+		_alarmManagerViewController.OnAddButtonEvent += OnAlarmManagerAddButtonClicked;
 
 		_timerSetViewController.OnCancelButtonEvent += OnTimerSetViewCancelButton;
 		_timerSetViewController.OnSaveButtonEvent += OnTimerSetViewSaveButton;
@@ -59,6 +62,9 @@ public class UIController : MonoBehaviour {
 		_chapterSelectViewController.OnCancelButtonEvent += OnChaterSelectViewCancelButton;
 
 		_notificationDisplayViewController.OnCloseButtonEvent += OnNotificationDisplayViewCloseButton;
+
+		_alarmSetViewController.OnApplyEvent += OnAlarmSetApplyButtonClick;
+		_alarmSetViewController.OnCancelEvent += OnAlarmSetCancelButtonClick;
 	}
 
 	private void UnSubscribeEvents()
@@ -69,6 +75,7 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController.OnMainAppViewApplyButtonEvent -= OnMainAppViewApplyButtonClick;
 
 		_alarmManagerViewController.OnBackButtonEvent -= OnAlarmManagerBackButton;
+		_alarmManagerViewController.OnAddButtonEvent -= OnAlarmManagerAddButtonClicked;
 
 		_timerSetViewController.OnCancelButtonEvent -= OnTimerSetViewCancelButton;
 		_timerSetViewController.OnSaveButtonEvent -= OnTimerSetViewSaveButton;
@@ -77,6 +84,9 @@ public class UIController : MonoBehaviour {
 		_chapterSelectViewController.OnCancelButtonEvent -= OnChaterSelectViewCancelButton;
 
 		_notificationDisplayViewController.OnCloseButtonEvent -= OnNotificationDisplayViewCloseButton;
+
+		_alarmSetViewController.OnApplyEvent -= OnAlarmSetApplyButtonClick;
+		_alarmSetViewController.OnCancelEvent -= OnAlarmSetCancelButtonClick;
 	}
 
 	#region MainApp View Actions
@@ -133,6 +143,13 @@ public class UIController : MonoBehaviour {
 		_mainAppViewController.Show();
 	}
 
+	private void OnAlarmManagerAddButtonClicked()
+	{
+		Debug.Log("UIController.OnAlarmManagerAddButtonClicked - OK");
+		_alarmManagerViewController.Hide();
+		_alarmSetViewController.Show();
+	}
+
 	#endregion
 
 	#region Timer Set View Actions
@@ -178,7 +195,7 @@ public class UIController : MonoBehaviour {
 
 	#endregion
 
-	#region Notivication Display View Action
+	#region Notification Display View Action
 
 	private void OnNotificationDisplayViewCloseButton()
 	{
@@ -191,5 +208,23 @@ public class UIController : MonoBehaviour {
 
 	#endregion
 
+	#region Alarm Set View Actions
+
+	private void OnAlarmSetCancelButtonClick()
+	{
+		Debug.Log("UIController.OnAlarmSetCancelButtonClick - OK");
+
+		_alarmSetViewController.Hide();
+		_alarmManagerViewController.Show();
+	}
+
+	private void OnAlarmSetApplyButtonClick()
+	{
+		Debug.Log("UIController.OnAlarmSetCancelButtonClick - OK");
+		_alarmSetViewController.Hide();
+		_alarmManagerViewController.Show();
+	}
+
+	#endregion
 	#endregion
 }

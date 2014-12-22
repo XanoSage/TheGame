@@ -27,6 +27,8 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 		_model.IsTimerOnPause = false;
 		OnPausePressedAction(_model.IsTimerOnPause);
 
+		Hide();
+
 	}
 	
 	// Update is called once per frame

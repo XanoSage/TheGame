@@ -56,6 +56,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 		SubscribeEvents();
 
+		SetDefaultTimer();
+
 		ShowAlarmTimeLabel();
 		HideTimerTimeLabel();
 	}
@@ -101,6 +103,11 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 		_model.TheTimer = SimpleTimer.Create(hour, minutes, interval);
 		InitTimerDisplayLabel();
 		InitNotificationCountLabel();
+	}
+
+	private void SetDefaultTimer()
+	{
+		SetTimer(10, 20, 15);
 	}
 
 	private void InitTimerDisplayLabel()

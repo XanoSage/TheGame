@@ -11,7 +11,9 @@ public class AlarmManagerViewController : MonoBehaviour, IShowable
 	private AlarmManagerViewModel _model;
 
 
-	public event Action OnBackButtonEvent; 
+	public event Action OnBackButtonEvent;
+
+	public event Action OnAddButtonEvent;
 	#endregion
 
 	#region Monobehaviour actions
@@ -70,6 +72,11 @@ public class AlarmManagerViewController : MonoBehaviour, IShowable
 	private void OnAddButtonClick(GameObject sender)
 	{
 		Debug.Log("AlarmManagerViewController.OnAddButtonClick - OK");
+
+		if (null != OnAddButtonEvent)
+		{
+			OnAddButtonEvent();
+		}
 	}
 
 	private void OnAddButtonPress(GameObject sender, bool isPressed)
