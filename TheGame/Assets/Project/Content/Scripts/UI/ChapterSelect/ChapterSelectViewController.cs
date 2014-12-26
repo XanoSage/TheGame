@@ -209,6 +209,16 @@ public class ChapterSelectViewController : MonoBehaviour, IShowable {
 		return str;
 	}
 
+	public List<string> GetChapterIds()
+	{
+		return _chaptersId.ToList();
+	}
+
+	public List<string> GetChapterNames()
+	{
+		return _chaptersName.ToList();
+	}
+
 	#endregion
 
 	#region IShowable Implenentation

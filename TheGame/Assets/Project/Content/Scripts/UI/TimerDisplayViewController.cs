@@ -1,4 +1,5 @@
-﻿using Assets.Project.Content.Scripts.Timer;
+﻿using System;
+using Assets.Project.Content.Scripts.Timer;
 using UnityEngine;
 using System.Collections;
 using UnityTools.Other;
@@ -8,6 +9,11 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 	#region Variables
 
 	private TimerDisplayViewModel _model;
+
+	public SimpleTimer ParentTimer {get { return _model.ParentTimer; }}
+
+	public event Action OnCancelButtonEvent;
+	public event Action OnMainTimerEndEvent;
 
 	#endregion
 
@@ -32,6 +38,8 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 		_model.TimerViewState = TimerDisplayViewModel.TimerState.Stop;
 
 		Hide();
+
+		//InitSimpleTimer();
 
 	}
 	
@@ -88,12 +96,19 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 
 		UpdateIdleTimer(_model.IdleTimer.ToString());
 		UpdateMainTimer(_model.MainTimer.ToString());
+
+		_model.TimerViewState = TimerDisplayViewModel.TimerState.MainTimerWork;
 	}
 
 	private void OnCancelButtonClick(GameObject sender)
 	{
 		Debug.Log("TimerDisplayViewController.OnCancelButtonClick - OK");
 		_model.TimerViewState = TimerDisplayViewModel.TimerState.Stop;
+
+		if (null != OnCancelButtonEvent)
+		{
+			OnCancelButtonEvent();
+		}
 	}
 
 	private void OnPauseButtonClick(GameObject sender)
@@ -139,6 +154,16 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 
 			_model.ContinueLabelIdle.gameObject.SetActive(true);
 			_model.ContinueLabelPressed.gameObject.SetActive(true);
+
+			if (_model.TimerViewState == TimerDisplayViewModel.TimerState.MainTimerWork)
+			{
+				_model.TimerViewState = TimerDisplayViewModel.TimerState.MainTimerOnPause;
+			}
+
+			if (_model.TimerViewState == TimerDisplayViewModel.TimerState.IdleTimerWork)
+			{
+				_model.TimerViewState = TimerDisplayViewModel.TimerState.IdleTimerOnPause;
+			}
 		}
 		else
 		{
@@ -147,7 +172,31 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 
 			_model.ContinueLabelIdle.gameObject.SetActive(false);
 			_model.ContinueLabelPressed.gameObject.SetActive(false);
+
+			if (_model.TimerViewState == TimerDisplayViewModel.TimerState.MainTimerOnPause)
+			{
+				_model.TimerViewState = TimerDisplayViewModel.TimerState.MainTimerWork;
+			}
+
+			if (_model.TimerViewState == TimerDisplayViewModel.TimerState.IdleTimerOnPause)
+			{
+				_model.TimerViewState = TimerDisplayViewModel.TimerState.IdleTimerWork;
+			}
 		}
+	}
+
+	#region Timer Controller Action
+
+	public void InitSimpleTimer()
+	{
+		SimpleTimer simple = SimpleTimer.Create(00, 01, 01);
+		simple.CalculateNotificationsCount();
+		//simple.NotificationCount = 5;
+
+		Debug.Log("TimerDisplayViewController.InitSimpleTimer - notification coint is :" + simple.NotificationCount);
+
+
+		Init(simple);
 	}
 
 	private void UpdateMainTimer(string currentTimerTime)
@@ -174,10 +223,9 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 
 		UpdateIdleTimer(_model.IdleTimer.ToString());
 		UpdateMainTimer(_model.MainTimer.ToString());
+
+		_model.TimerViewState = TimerDisplayViewModel.TimerState.MainTimerWork;
 	}
-
-
-	#region Timer Controller Action
 
 	private void UpdateTimerViewController()
 	{
@@ -196,6 +244,7 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 			case TimerDisplayViewModel.TimerState.IdleTimerWork:
 
 				_model.IdleTimerController.Update();
+				UpdateSpriteProgress(_model.IdleTimer, false);
 
 				break;
 
@@ -205,6 +254,7 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 			case TimerDisplayViewModel.TimerState.MainTimerWork:
 
 				_model.MainTimerController.Update();
+				UpdateSpriteProgress(_model.MainTimer, true);
 
 				break;
 
@@ -216,10 +266,25 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 		}
 	}
 
+	public void StartMainTimer()
+	{
+		_model.TimerViewState = TimerDisplayViewModel.TimerState.MainTimerWork;
+	}
+
+	public void StartIdleTimer()
+	{
+		_model.TimerViewState = TimerDisplayViewModel.TimerState.IdleTimerWork;
+	}
+
 	private void OnMainTimerEnd()
 	{
 		Debug.Log("TimerDisplayViewController.OnMainTimerEnd - OK");
 		_model.TimerViewState = TimerDisplayViewModel.TimerState.ShowNotifications;
+
+		if (null != OnMainTimerEndEvent)
+		{
+			OnMainTimerEndEvent();
+		}
 	}
 
 	private void OnIdleTimerEnd()
@@ -227,6 +292,24 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 		Debug.Log("TimerDisplayViewController.OnIdleTimerEnd - OK");
 
 		_model.TimerViewState = TimerDisplayViewModel.TimerState.MainTimerWork;
+		ResetTimer();
+	}
+
+	private void UpdateSpriteProgress(SimpleTimer timer, bool isBackDirection)
+	{
+		if (_model.ProgressSprite == null)
+		{
+			return;
+		}
+
+		if (isBackDirection)
+		{
+			_model.ProgressSprite.fillAmount = 1 - timer.CurrentTotalInSeconds/timer.TotalInSeconds;
+		}
+		else
+		{
+			_model.ProgressSprite.fillAmount = timer.CurrentTotalInSeconds/timer.TotalInSeconds;
+		}
 	}
 	#endregion
 

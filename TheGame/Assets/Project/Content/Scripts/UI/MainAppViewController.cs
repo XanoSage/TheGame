@@ -25,6 +25,10 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 	public int SelectedChapterCount {get { return _model.SelectedChapters.Count; }}
 
+	public MainAppViewModel.MainSetting Setting {get { return _model.Setting; }}
+
+	public int NotificationCount {get { return _model.TheTimer.NotificationCount; }}
+
 
 
 	public event Action OnMainAppViewAlarmChangeEvent;
@@ -110,6 +114,13 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 		SetTimer(10, 20, 15);
 	}
 
+	public void SetTimer(SimpleTimer timer)
+	{
+		Debug.Log("MainAappViewController.SetTimer(SimpleTimer) - OK, notification count: " + timer.NotificationCount);
+		_model.TheTimer = timer;
+		UpdateNotificationCountLabel();
+	}
+
 	private void InitTimerDisplayLabel()
 	{
 		if (_model.TheTimer == null)
@@ -118,6 +129,28 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 		string str = string.Format("{0:D2}:{1:D2}", _model.TheTimer.Hour, _model.TheTimer.Minutes);
 
 		_model.TimerTimeShowLabel.text = str;
+	}
+
+	public void OnNotificationDisplayCloseButton()
+	{
+		//Debug.Log("MainAppViewController.OnNotificationDisplayCloseButton - OK");
+
+		if (_model.TheTimer.NotificationCount > 1)
+		{
+			_model.TheTimer.CalculateNotificationsCount();	
+		}
+		else
+		{
+			_model.TheTimer.NotificationCount --;	
+		}
+		
+		if (_model.TheTimer.NotificationCount < 0)
+		{
+			_model.TheTimer.NotificationCount = 0;
+		}
+
+		Debug.Log("MainAppViewController.OnNotificationDisplayCloseButton - OK, notification count: " + _model.TheTimer.NotificationCount);
+		UpdateNotificationCountLabel();
 	}
 
 	private void InitNotificationCountLabel()
@@ -131,6 +164,18 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 		_model.MessageShowCountLabel.text = _model.TheTimer.NotificationCount.ToString();
 	}
+
+	public void UpdateNotificationCountLabel()
+	{
+		if (_model.TheTimer == null)
+		{
+			return;
+		}
+
+		_model.MessageShowCountLabel.text = _model.TheTimer.NotificationCount.ToString();
+	}
+
+
 
 	#region Button Handler Actions
 

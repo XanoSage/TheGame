@@ -30,6 +30,8 @@ public class TimerDisplayViewModel : MonoBehaviour {
 	public UILabel MainTimerLabel;
 	public UILabel IdleTimerLabel;
 
+	public UISprite ProgressSprite;
+
 	[HideInInspector] public bool IsTimerOnPause;
 	[HideInInspector] public TimerState TimerViewState;
 

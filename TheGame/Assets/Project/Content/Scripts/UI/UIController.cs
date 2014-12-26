@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour {
 	private ChapterSelectViewController _chapterSelectViewController;
 	private NotificationDisplayViewController _notificationDisplayViewController;
 	private AlarmSetViewController _alarmSetViewController;
+	private TimerDisplayViewController _timerDisplayViewController;
 
 
 	#endregion
@@ -27,6 +28,7 @@ public class UIController : MonoBehaviour {
 		_chapterSelectViewController = FindObjectOfType<ChapterSelectViewController>();
 		_notificationDisplayViewController = FindObjectOfType<NotificationDisplayViewController>();
 		_alarmSetViewController = FindObjectOfType<AlarmSetViewController>();
+		_timerDisplayViewController = FindObjectOfType<TimerDisplayViewController>();
 
 		SubscribeEvents();
 	}
@@ -61,10 +63,14 @@ public class UIController : MonoBehaviour {
 		_chapterSelectViewController.OnApplyButtonEvent += OnChapterSelectViewApplyButton;
 		_chapterSelectViewController.OnCancelButtonEvent += OnChaterSelectViewCancelButton;
 
+		_notificationDisplayViewController.OnCloseButtonEvent += _mainAppViewController.OnNotificationDisplayCloseButton;
 		_notificationDisplayViewController.OnCloseButtonEvent += OnNotificationDisplayViewCloseButton;
 
 		_alarmSetViewController.OnApplyEvent += OnAlarmSetApplyButtonClick;
 		_alarmSetViewController.OnCancelEvent += OnAlarmSetCancelButtonClick;
+
+		_timerDisplayViewController.OnCancelButtonEvent += OnTimerDisplayCancelButtonClick;
+		_timerDisplayViewController.OnMainTimerEndEvent += OnTimerDisplayMainTimerEnd;
 	}
 
 	private void UnSubscribeEvents()
@@ -84,9 +90,13 @@ public class UIController : MonoBehaviour {
 		_chapterSelectViewController.OnCancelButtonEvent -= OnChaterSelectViewCancelButton;
 
 		_notificationDisplayViewController.OnCloseButtonEvent -= OnNotificationDisplayViewCloseButton;
+		_notificationDisplayViewController.OnCloseButtonEvent -= _mainAppViewController.OnNotificationDisplayCloseButton;
 
 		_alarmSetViewController.OnApplyEvent -= OnAlarmSetApplyButtonClick;
 		_alarmSetViewController.OnCancelEvent -= OnAlarmSetCancelButtonClick;
+
+		_timerDisplayViewController.OnCancelButtonEvent -= OnTimerDisplayCancelButtonClick;
+		_timerDisplayViewController.OnMainTimerEndEvent -= OnTimerDisplayMainTimerEnd;
 	}
 
 	#region MainApp View Actions
@@ -116,7 +126,7 @@ public class UIController : MonoBehaviour {
 
 	private void OnMainAppViewApplyButtonClick()
 	{
-		Debug.Log("UIController.OnMainAppViewChapterChangeClick - OK");
+		Debug.Log("UIController.OnMainAppViewChapterChangeClick - OK, selected chapter count: " + _mainAppViewController.SelectedChapterCount);
 
 		if (_mainAppViewController.SelectedChapterCount < 1)
 		{
@@ -125,11 +135,20 @@ public class UIController : MonoBehaviour {
 			return;
 		}
 
-		_mainAppViewController.Hide();
+		if (_mainAppViewController.Setting == MainAppViewModel.MainSetting.Timer)
+		{
+			_mainAppViewController.Hide();
+			_timerDisplayViewController.InitSimpleTimer();
 
-		_notificationDisplayViewController.Init(_mainAppViewController.CurrentNotification);
+			Debug.Log("UIController.OnMainAppViewApplyButtonClick - OK, notification count: " +
+			          _timerDisplayViewController.ParentTimer.NotificationCount);
 
-		_notificationDisplayViewController.Show();
+			_mainAppViewController.SetTimer(_timerDisplayViewController.ParentTimer);
+			_timerDisplayViewController.Show();
+		}
+		//_notificationDisplayViewController.Init(_mainAppViewController.CurrentNotification);
+
+		//_notificationDisplayViewController.Show();
 	}
 
 	#endregion
@@ -203,7 +222,17 @@ public class UIController : MonoBehaviour {
 
 		_notificationDisplayViewController.Hide();
 
-		_mainAppViewController.Show();
+		if (_mainAppViewController.NotificationCount > 1)
+		{
+			_timerDisplayViewController.StartIdleTimer();
+			_timerDisplayViewController.Show();
+		}
+		else
+		{
+			_mainAppViewController.Show();	
+		}
+
+		
 	}
 
 	#endregion
@@ -226,5 +255,31 @@ public class UIController : MonoBehaviour {
 	}
 
 	#endregion
+
+	#region Timer Display Actions
+
+	private void OnTimerDisplayCancelButtonClick()
+	{
+		Debug.Log("UIController.OnTimerDisplayCancelButtonClick - OK");
+
+		//TODO need to add MessageBox controller (yes/no/ok/cancel button)
+
+		_timerDisplayViewController.Hide();
+		_mainAppViewController.Show();
+	}
+
+	private void OnTimerDisplayMainTimerEnd()
+	{
+		Debug.Log("UIController.OnTimerDisplayCancelButtonClick - OK");
+
+		_timerDisplayViewController.Hide();
+
+		_notificationDisplayViewController.Init(_mainAppViewController.CurrentNotification);
+
+		_notificationDisplayViewController.Show();
+	}
+
+	#endregion
+
 	#endregion
 }

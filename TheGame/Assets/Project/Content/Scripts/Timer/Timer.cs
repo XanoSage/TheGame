@@ -25,6 +25,10 @@ namespace Assets.Project.Content.Scripts.Timer
 
 		public int Seconds { get; set; }
 
+		public float TotalInSeconds { get; private set; }
+
+		public float CurrentTotalInSeconds { get; set; }
+
 		#endregion
 
 		#region Constructor
@@ -36,6 +40,8 @@ namespace Assets.Project.Content.Scripts.Timer
 			Interval = 0;
 
 			NotificationCount = 0;
+			TotalInSeconds = 0f;
+			CurrentTotalInSeconds = 0;
 		}
 
 		public SimpleTimer(int hour, int minutes, int interval)
@@ -44,6 +50,8 @@ namespace Assets.Project.Content.Scripts.Timer
 			Minutes = minutes;
 			Interval = interval;
 			NotificationCount = 0;
+
+			TotalInSeconds = Minutes*60 + Hour *60*60;
 		}
 
 		public SimpleTimer(SimpleTimer timer)
@@ -53,6 +61,9 @@ namespace Assets.Project.Content.Scripts.Timer
 			Seconds = timer.Seconds;
 			Interval = timer.Interval;
 			NotificationCount = 0;
+
+			TotalInSeconds = Minutes*60 + Hour *60*60;
+			CurrentTotalInSeconds = 0;
 		}
 
 		public SimpleTimer(int totalMinutes)
@@ -62,6 +73,9 @@ namespace Assets.Project.Content.Scripts.Timer
 			Interval = 0;
 			Seconds = 0;
 			NotificationCount = 0;
+
+			TotalInSeconds = Minutes*60 + Hour *60*60;
+			CurrentTotalInSeconds = 0;
 		}
 
 		public static SimpleTimer Create(int hour, int minutes, int interval)
@@ -156,6 +170,8 @@ namespace Assets.Project.Content.Scripts.Timer
 		
 		private void OnTimerEnd()
 		{
+			_timer.CurrentTotalInSeconds = 0;
+
 			if (null != OnTimerEndAction)
 				OnTimerEndAction();
 		}
@@ -170,6 +186,8 @@ namespace Assets.Project.Content.Scripts.Timer
 				OnTimerEnd();
 				return;
 			}
+
+			_timer.CurrentTotalInSeconds += Time.deltaTime;
 
 			if (_timerCount < OneSeconds)
 			{
@@ -206,7 +224,7 @@ namespace Assets.Project.Content.Scripts.Timer
 						_timer.Minutes = 0;
 					}
 
-					if (_timer.Hour == 0)
+					if (IsEndOfTimer())
 					{
 						OnTimerEnd();
 					}
