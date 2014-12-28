@@ -7,5 +7,7 @@ public class SelectedChapterHelperModel : MonoBehaviour {
 
 	public UILabel ChapterName;
 
+	[HideInInspector] public int Index;
+
 	#endregion
 }

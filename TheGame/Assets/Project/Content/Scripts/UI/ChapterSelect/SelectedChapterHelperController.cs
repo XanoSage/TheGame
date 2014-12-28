@@ -15,6 +15,8 @@ public class SelectedChapterHelperController : MonoBehaviour {
 		}
 	}
 
+	public int Index { get { return _model.Index; } }
+
 	#endregion
 
 
@@ -44,12 +46,13 @@ public class SelectedChapterHelperController : MonoBehaviour {
 
 	#region Actions
 
-	public void Init(string chapterName)
+	public void Init(string chapterName, int index)
 	{
 		if (null == _model)
 			return;
 
 		_model.ChapterName.text = chapterName;
+		_model.Index = index;
 	}
 
 	#endregion

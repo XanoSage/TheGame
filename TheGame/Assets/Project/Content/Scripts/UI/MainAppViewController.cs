@@ -292,7 +292,7 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 			_model.SelectedChapterContainer.height += selectedChapter.WidgetHeight;
 
-			selectedChapter.Init(chapter.Name);
+			selectedChapter.Init(chapter.Name, chapter.Index);
 			
 			Vector3 currPos = selectedChapter.transform.localPosition;
 
@@ -329,6 +329,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 		Debug.Log("MainAppViewController.OnApplyButtonClick - OK");
 
 		TryGetAnyText();
+
+		NotificationController.Instance.InitSelectedChapter(_model.SelectedChapters);
 
 		if (null != OnMainAppViewApplyButtonEvent)
 		{

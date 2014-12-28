@@ -103,7 +103,9 @@ namespace Assets.Project.Content.Scripts.Timer
 			int currentTimeInMinutes = now.Hour*60 + now.Minute;
 			int restOfDayInMinutes = TotalMinutesInOneDay - currentTimeInMinutes;
 
-			int notifCountWithoutInterval = restOfDayInMinutes/(Hour*60 + Minutes);
+			int notifCountWithoutInterval = Hour == 0 && Minutes == 0
+				                                ? restOfDayInMinutes
+				                                : restOfDayInMinutes/(Hour*60 + Minutes);
 			NotificationCount = restOfDayInMinutes/(Hour*60 + Minutes + Interval);
 
 			if (NotificationCount == 0)

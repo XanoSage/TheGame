@@ -26,7 +26,7 @@ namespace Assets.Project.Content.Scripts.UI.Notification
 
 		public Notification(string chapterName, string chapterId, string description)
 		{
-			ChapterId = chapterName;
+			ChapterId = chapterId;
 			ChapterName = chapterName;
 			Description = description;
 			IsShowed = false;
@@ -36,12 +36,21 @@ namespace Assets.Project.Content.Scripts.UI.Notification
 		{
 			return new Notification(chapterName, chapterId, description);
 		}
+
+		public override string ToString()
+		{
+			string str = string.Format("Chapter Id {0}, Name {1}, Description: {2}", ChapterId, ChapterName, Description);
+			return str;
+		}
 	}
 
 	public class NotificationContainer {
 		#region Variables
 
 		private string _chapterName;
+
+		public string Name { get { return _chapterName; } }
+
 		private string _chapterId;
 		private List<Notification> _notifications;
 
@@ -87,9 +96,11 @@ namespace Assets.Project.Content.Scripts.UI.Notification
 				throw new NullReferenceException("NotificationContainer.AddNotification - trying to add empty notification");
 			}
 
-			if (_chapterId != notification.ChapterId)
+			if (!notification.ChapterId.Contains(_chapterId))
 			{
-				Debug.Log("NotificationContainer.AddNotification - trying to add notification from other chapter");
+				Debug.Log(string.Format(
+					"NotificationContainer.AddNotification - trying to add notification from other chapter: chapterId {0}, notification Id: {1}, description:{2}",
+					_chapterId, notification.ChapterId, notification.Description));
 				return;
 			}
 

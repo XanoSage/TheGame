@@ -189,7 +189,7 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 
 	public void InitSimpleTimer()
 	{
-		SimpleTimer simple = SimpleTimer.Create(00, 01, 01);
+		SimpleTimer simple = SimpleTimer.Create(00, 00, 01);
 		simple.CalculateNotificationsCount();
 		//simple.NotificationCount = 5;
 

@@ -270,11 +270,12 @@ public class UIController : MonoBehaviour {
 
 	private void OnTimerDisplayMainTimerEnd()
 	{
-		Debug.Log("UIController.OnTimerDisplayCancelButtonClick - OK");
+		Debug.Log("UIController.OnTimerDisplayMainTimerEnd - OK");
 
 		_timerDisplayViewController.Hide();
 
-		_notificationDisplayViewController.Init(_mainAppViewController.CurrentNotification);
+		_notificationDisplayViewController.Init(NotificationController.Instance.GetNotifications());
+		//_notificationDisplayViewController.Init(_mainAppViewController.CurrentNotification);
 
 		_notificationDisplayViewController.Show();
 	}
