@@ -138,7 +138,8 @@ public class UIController : MonoBehaviour {
 		if (_mainAppViewController.Setting == MainAppViewModel.MainSetting.Timer)
 		{
 			_mainAppViewController.Hide();
-			_timerDisplayViewController.InitSimpleTimer();
+			_timerDisplayViewController.Init(_mainAppViewController.TSimpleTimer);
+			//_timerDisplayViewController.InitSimpleTimer();
 
 			Debug.Log("UIController.OnMainAppViewApplyButtonClick - OK, notification count: " +
 			          _timerDisplayViewController.ParentTimer.NotificationCount);

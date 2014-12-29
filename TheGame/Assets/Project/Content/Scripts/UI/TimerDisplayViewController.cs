@@ -82,7 +82,7 @@ public class TimerDisplayViewController : MonoBehaviour, IShowable {
 		_model.IdleTimerController.OnTimerEndAction -= OnIdleTimerEnd;
 	}
 
-	private void Init(SimpleTimer timer)
+	public void Init(SimpleTimer timer)
 	{
 		_model.ParentTimer = timer;
 

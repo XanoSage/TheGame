@@ -29,6 +29,8 @@ public class MainAppViewController : MonoBehaviour, IShowable {
 
 	public int NotificationCount {get { return _model.TheTimer.NotificationCount; }}
 
+	public SimpleTimer TSimpleTimer {get { return _model.TheTimer; }}
+
 
 
 	public event Action OnMainAppViewAlarmChangeEvent;
